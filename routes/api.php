@@ -21,6 +21,7 @@ Route::prefix('admin')->group(function () {
                     Route::post('logout',[AdminController::class,'logout']);
                     //create post route
                      Route::post('/post/create',[PostsController::class,'create']);
+                     Route::post('/post/fetch',[PostsController::class,'fetch']);
                      Route::put('/post/update/{id}', [PostsController::class,'update']);
                      Route::delete('/post/delete/{id}', [PostsController::class,'delete']);
       

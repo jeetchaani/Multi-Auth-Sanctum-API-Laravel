@@ -26,7 +26,8 @@ class PostsController extends Controller
                         $post=Post::create([
                             'user_id'=>$admin_id,
                             'title'=>$request->title,
-                            'description'=>$request->description
+                            'description'=>$request->description,
+                            'status'=>'Y'
                         ]);
                         return $this->jsonResponse(true,$post,200);
                     }
@@ -82,10 +83,28 @@ class PostsController extends Controller
                 }
         }
     }
+   public function fetch(Request $request){
+    if(auth()->user()->currentAccessToken()){
+        $admin_id=auth()->user()->currentAccessToken()->tokenable_id;
+           //get post of this user and apply paginate on every post 
+           $records_per_page=1;  
+           $result=Post::where('user_id','=',$admin_id)
+           ->where('status','=','Y')
+           ->skip($this->paginationCustom($request->page,$records_per_page))
+           ->take($records_per_page)
+           ->orderBy('id','desc')
+           ->get();
+           return $this->jsonResponse(true,$result,200);
+
+    }
+   }  
     public function jsonResponse($status,$message,$status_code){
-        return response()->json([
-'status'=>$status,
-'message'=>$message
-],$status_code);
+                          return response()->json([
+                        'status'=>$status,
+                     'message'=>$message
+                    ],$status_code);
+}
+public function paginationCustom($page=1,$records_per_page){
+    return ($page-1)*$records_per_page;
 }
 }
