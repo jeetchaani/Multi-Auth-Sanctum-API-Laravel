@@ -18,8 +18,11 @@ Route::prefix('admin')->group(function () {
           //protected routes
          
                Route::middleware(['auth:sanctum','abilities:admin'])->group(function () {
+                    Route::post('logout',[AdminController::class,'logout']);
                     //create post route
                      Route::post('/post/create',[PostsController::class,'create']);
+                     Route::put('/post/update/{id}', [PostsController::class,'update']);
+                     Route::delete('/post/delete/{id}', [PostsController::class,'delete']);
       
                 });
        

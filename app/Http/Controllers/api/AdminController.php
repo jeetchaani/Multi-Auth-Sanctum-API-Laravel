@@ -38,6 +38,11 @@ class AdminController extends Controller
                 }
 
      }
+     public function logout(){
+        //post request
+        auth()->user()->tokens()->delete();
+        return $this->jsonResponse(true,"logout successfully",200);
+     }
 
      public function jsonResponse($status,$message,$status_code){
                     return response()->json([

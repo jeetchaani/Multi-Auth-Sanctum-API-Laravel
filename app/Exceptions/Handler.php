@@ -6,6 +6,8 @@ use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 use \Laravel\Sanctum\Exceptions\MissingAbilityException;
 
+
+
 class Handler extends ExceptionHandler
 {
     /**
@@ -30,9 +32,10 @@ class Handler extends ExceptionHandler
     }
             public function render($request, Throwable $exception)
         {
-            if ($exception instanceof MissingAbilityException && $exception->getMessage() === 'Invalid ability provided.') {
+            if ($exception instanceof MissingAbilityException) {
                 return response()->json(['error' => 'Invalid ability provided.'], 403);
             }
+           
 
             return parent::render($request, $exception);
         }
