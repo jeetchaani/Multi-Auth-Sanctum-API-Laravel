@@ -19,7 +19,7 @@ class UserController extends Controller
                    'password'=>'required'
               ]);
                 if($validator->fails()){
-                    return $this->jsonResponse(false,$validator->errors(),422);
+                    return jsonResponse(false,$validator->errors(),422);
                 }
                 elseif (Auth::guard('web')->attempt(['email' => $request->email, 'password' => $request->password])) {
                        
@@ -30,19 +30,14 @@ class UserController extends Controller
                          'token'=>$token
                     ];
 
-                    return $this->jsonResponse(true,$message,200);
+                    return jsonResponse(true,$message,200);
 
                 } else{
                      $message="Invalid Email or Password";
-                     return $this->jsonResponse(false,$message,401);
+                     return jsonResponse(false,$message,401);
                 }
 
      }
 
-     public function jsonResponse($status,$message,$status_code){
-                    return response()->json([
-            'status'=>$status,
-            'message'=>$message
-       ],$status_code);
-     }
+     
 }

@@ -19,7 +19,7 @@ class AdminController extends Controller
                    'password'=>'required'
               ]);
                 if($validator->fails()){
-                    return $this->jsonResponse(false,$validator->errors(),422);
+                    return jsonResponse(false,$validator->errors(),422);
                 }
                 elseif (Auth::guard('admin')->attempt(['email' => $request->email, 'password' => $request->password])) {
                        
@@ -30,24 +30,19 @@ class AdminController extends Controller
                          'token'=>$token
                     ];
 
-                    return $this->jsonResponse(true,$message,200);
+                    return jsonResponse(true,$message,200);
 
                 } else{
                      $message="Invalid Email or Password";
-                     return $this->jsonResponse(false,$message,401);
+                     return jsonResponse(false,$message,401);
                 }
 
      }
      public function logout(){
         //post request
         auth()->user()->tokens()->delete();
-        return $this->jsonResponse(true,"logout successfully",200);
+        return jsonResponse(true,"logout successfully",200);
      }
 
-     public function jsonResponse($status,$message,$status_code){
-                    return response()->json([
-            'status'=>$status,
-            'message'=>$message
-       ],$status_code);
-     }
+     
 }
